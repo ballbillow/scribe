@@ -29,8 +29,9 @@ if len(sys.argv) == 2:
   category = sys.argv[1]
   host = '127.0.0.1'
   port = 1463
-elif len(sys.argv) == 4 and sys.argv[1] == '-h':
+elif len(sys.argv) == 5 and sys.argv[1] == '-h':
   category = sys.argv[3]
+  loop = int(sys.argv[4])
   host_port = sys.argv[2].split(':')
   host = host_port[0]
   if len(host_port) > 1:
@@ -38,7 +39,7 @@ elif len(sys.argv) == 4 and sys.argv[1] == '-h':
   else:
     port = 1463
 else:
-  sys.exit('usage (message is stdin): scribe_cat [-h host[:port]] category')
+  sys.exit('usage (message is stdin): scribe_cat [-h host[:port]] category loop')
 
 log_entry = scribe.LogEntry(category=category, message=sys.stdin.read())
 
@@ -48,7 +49,10 @@ protocol = TBinaryProtocol.TBinaryProtocol(trans=transport, strictRead=False, st
 client = scribe.Client(iprot=protocol, oprot=protocol)
 
 transport.open()
-result = client.Log(messages=[log_entry])
+while (loop>0):
+	result = client.Log(messages=[log_entry])
+	loop -= 1
+
 transport.close()
 
 if result == scribe.ResultCode.OK:
