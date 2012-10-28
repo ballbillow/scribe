@@ -20,28 +20,32 @@
 #include "network_dynamic_config.h"
 #include "dynamic_bucket_updater.h"
 
-static NetworkDynamicConfigMod netConfigMods[] = {
-  {
-    "thrift_bucket",
-    DynamicBucketUpdater::isConfigValid,
-    DynamicBucketUpdater::getHost,
-  },
-  {
-    "",
-    NULL,
-    NULL,
-  },
+static NetworkDynamicConfigMod netConfigMods[] =
+{
+    {
+        "thrift_bucket",
+        DynamicBucketUpdater::isConfigValid,
+        DynamicBucketUpdater::getHost,
+    },
+    {
+        "",
+        NULL,
+        NULL,
+    },
 };
 
-NetworkDynamicConfigMod* getNetworkDynamicConfigMod(const char* name) {
-  for (NetworkDynamicConfigMod *pconf = netConfigMods;
-      pconf->isConfigValidFunc && pconf->getHostFunc;
-      ++pconf) {
-    if (strcmp(name, pconf->name) == 0) {
-      return pconf;
+NetworkDynamicConfigMod* getNetworkDynamicConfigMod(const char* name)
+{
+    for (NetworkDynamicConfigMod *pconf = netConfigMods;
+            pconf->isConfigValidFunc && pconf->getHostFunc;
+            ++pconf)
+    {
+        if (strcmp(name, pconf->name) == 0)
+        {
+            return pconf;
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 

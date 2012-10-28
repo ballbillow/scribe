@@ -26,10 +26,11 @@
 typedef bool (*NetworkIsConfigValidFunc)(const std::string& category, const StoreConf* pconf);
 typedef bool (*NetworkGetHost)(const std::string& category, const StoreConf* pconf, std::string& host, uint32_t& port);
 
-struct NetworkDynamicConfigMod {
-  const char* name;
-  NetworkIsConfigValidFunc isConfigValidFunc;
-  NetworkGetHost getHostFunc;
+struct NetworkDynamicConfigMod
+{
+    const char* name;
+    NetworkIsConfigValidFunc isConfigValidFunc;
+    NetworkGetHost getHostFunc;
 };
 
 NetworkDynamicConfigMod* getNetworkDynamicConfigMod(const char* name);

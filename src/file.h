@@ -24,70 +24,75 @@
 
 #include "common.h"
 
-class FileInterface {
- public:
-  FileInterface(const std::string& name, bool framed);
-  virtual ~FileInterface();
+class FileInterface
+{
+public:
+    FileInterface(const std::string& name, bool framed);
+    virtual ~FileInterface();
 
-  static boost::shared_ptr<FileInterface> createFileInterface(const std::string& type,
-                                                              const std::string& name,
-                                                              bool framed = false);
-  static std::vector<std::string> list(const std::string& path, const std::string& fsType);
+    static boost::shared_ptr<FileInterface> createFileInterface(const std::string& type,
+            const std::string& name,
+            bool framed = false);
+    static std::vector<std::string> list(const std::string& path, const std::string& fsType);
 
-  virtual bool openRead() = 0;
-  virtual bool openWrite() = 0;
-  virtual bool openTruncate() = 0;
-  virtual bool isOpen() = 0;
-  virtual void close() = 0;
-  virtual bool write(const std::string& data) = 0;
-  virtual void flush() = 0;
-  virtual unsigned long fileSize() = 0;
-  virtual long readNext(std::string& _return) = 0;
-  virtual void deleteFile() = 0;
-  virtual void listImpl(const std::string& path, std::vector<std::string>& _return) = 0;
-  virtual std::string getFrame(unsigned data_size) {return std::string();};
-  virtual bool createDirectory(std::string path) = 0;
-  virtual bool createSymlink(std::string oldpath, std::string newpath) = 0;
+    virtual bool openRead() = 0;
+    virtual bool openWrite() = 0;
+    virtual bool openTruncate() = 0;
+    virtual bool isOpen() = 0;
+    virtual void close() = 0;
+    virtual bool write(const std::string& data) = 0;
+    virtual void flush() = 0;
+    virtual unsigned long fileSize() = 0;
+    virtual long readNext(std::string& _return) = 0;
+    virtual void deleteFile() = 0;
+    virtual void listImpl(const std::string& path, std::vector<std::string>& _return) = 0;
+    virtual std::string getFrame(unsigned data_size)
+    {
+        return std::string();
+    };
+    virtual bool createDirectory(std::string path) = 0;
+    virtual bool createSymlink(std::string oldpath, std::string newpath) = 0;
 
- protected:
-  bool framed;
-  std::string filename;
+protected:
+    bool framed;
+    std::string filename;
 
-  unsigned unserializeUInt(const char* buffer);
-  void serializeUInt(unsigned data, char* buffer);
+    unsigned unserializeUInt(const char* buffer);
+    void serializeUInt(unsigned data, char* buffer);
 };
 
-class StdFile : public FileInterface {
- public:
-  StdFile(const std::string& name, bool framed);
-  virtual ~StdFile();
+class StdFile : public FileInterface
+{
+public:
+    StdFile(const std::string& name, bool framed);
+    virtual ~StdFile();
 
-  bool openRead();
-  bool openWrite();
-  bool openTruncate();
-  bool isOpen();
-  void close();
-  bool write(const std::string& data);
-  void flush();
-  unsigned long fileSize();
-  long readNext(std::string& _return);
-  void deleteFile();
-  void listImpl(const std::string& path, std::vector<std::string>& _return);
-  std::string getFrame(unsigned data_size);
-  bool createDirectory(std::string path);
-  bool createSymlink(std::string newpath, std::string oldpath);
+    bool openRead();
+    bool openWrite();
+    bool openTruncate();
+    bool isOpen();
+    void close();
+    bool write(const std::string& data);
+    void flush();
+    unsigned long fileSize();
+    long readNext(std::string& _return);
+    void deleteFile();
+    void listImpl(const std::string& path, std::vector<std::string>& _return);
+    std::string getFrame(unsigned data_size);
+    bool createDirectory(std::string path);
+    bool createSymlink(std::string newpath, std::string oldpath);
 
- private:
-  bool open(std::ios_base::openmode mode);
+private:
+    bool open(std::ios_base::openmode mode);
 
-  char* inputBuffer;
-  unsigned bufferSize;
-  std::fstream file;
+    char* inputBuffer;
+    unsigned bufferSize;
+    std::fstream file;
 
-  // disallow copy, assignment, and empty construction
-  StdFile();
-  StdFile(StdFile& rhs);
-  StdFile& operator=(StdFile& rhs);
+    // disallow copy, assignment, and empty construction
+    StdFile();
+    StdFile(StdFile& rhs);
+    StdFile& operator=(StdFile& rhs);
 };
 
 #endif // !defined SCRIBE_FILE_H

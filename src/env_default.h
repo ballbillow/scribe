@@ -68,18 +68,20 @@ const std::string scribeversion("2.2");
   }
 
 
-namespace scribe {
+namespace scribe
+{
 
 /*
  * Network based configuration and directory service
  */
 
-namespace network_config {
-  // gets a vector of machine/port pairs for a named service
-  // returns true on success
-  bool getService(const std::string& serviceName,
-                         const std::string& options,
-                         server_vector_t& _return);
+namespace network_config
+{
+// gets a vector of machine/port pairs for a named service
+// returns true on success
+bool getService(const std::string& serviceName,
+                const std::string& options,
+                server_vector_t& _return);
 
 } // !namespace scribe::network_config
 
@@ -87,12 +89,13 @@ namespace network_config {
  * Concurrency mechanisms
  */
 
-namespace concurrency {
-  using apache::thrift::concurrency::ReadWriteMutex;
+namespace concurrency
+{
+using apache::thrift::concurrency::ReadWriteMutex;
 
-  // returns a new instance of read/write mutex.
-  // you can choose different implementations based on your needs.
-  boost::shared_ptr<ReadWriteMutex> createReadWriteMutex();
+// returns a new instance of read/write mutex.
+// you can choose different implementations based on your needs.
+boost::shared_ptr<ReadWriteMutex> createReadWriteMutex();
 
 } // !namespace scribe::concurrency
 
@@ -100,8 +103,9 @@ namespace concurrency {
  * Time functions
  */
 
-namespace clock {
-  unsigned long nowInMsec();
+namespace clock
+{
+unsigned long nowInMsec();
 
 } // !namespace scribe::clock
 
@@ -110,14 +114,16 @@ namespace clock {
  */
 
 // You can probably find better hash functions than these
-class integerhash {
- public:
-  static uint32_t hash32(uint32_t key);
+class integerhash
+{
+public:
+    static uint32_t hash32(uint32_t key);
 };
 
-class strhash {
- public:
-  static uint32_t hash32(const char *s);
+class strhash
+{
+public:
+    static uint32_t hash32(const char *s);
 };
 
 /*
